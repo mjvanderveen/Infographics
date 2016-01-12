@@ -1,0 +1,69 @@
+<html>
+    <head>
+        <title>Infographic examples</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="bower_components/Snap.svg/dist/snap.svg-min.js"></script>		
+    </head>
+    <body>
+
+		<script>
+            			
+			PercentageColorSVG("img/man.svg", 5,2,60,"path", "green", 0.2);
+			
+			function PercentageColorSVG(imagePath, cols, rows, percentage, elementToColor, color, scale) {
+			
+				var paper = Snap();
+					
+				Snap.load(imagePath, function (f) {
+					// select main element from callback
+					var element = f.select("g");
+									
+					// scale element
+					element.transform("scale("+ scale +")");
+					
+					//  Append paper to element
+					paper.append(element);
+					
+					// Get bounding box and set offset for clones
+					var bbox = paper.getBBox();
+					var width = bbox.w + 1;
+					var height = bbox.h + 1;
+					
+					var total = cols * rows;
+					var totalToColor = Math.round(total * (percentage /  100));
+					
+					// Loop through cols and rows
+					var current = 0;
+					for ( i=0; i<rows; i++) {
+					   for ( j=0; j<cols; j++) {
+						  if (i || j ) {   // skip the first cell
+							 // clone the element
+							 var clone = element.clone();
+							 
+							 if(current < totalToColor) {
+								 var path = clone.select(elementToColor);
+								 var fill = path.attr("style");
+								 path.attr({fill: color});
+							 }
+									 
+							 // transform the cloned element, by positioning and scaling
+							 var x =j*width;
+							 var y = i*height;
+							 var tstr = "translate("+x+","+y+"); scale("+ scale +")";
+							 clone.transform(tstr);
+						  }
+						  current++;
+					   }
+					}
+					
+					if(1 <= totalToColor){
+						var path = element.select(elementToColor);
+						var fill = path.attr("style");
+						path.attr({fill: color});
+					}
+				});     
+			}				
+        </script>
+    </body>
+</html>
