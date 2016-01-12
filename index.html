@@ -3,13 +3,13 @@
         <title>Infographic examples</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src="bower_components/Snap.svg/dist/snap.svg-min.js"></script>		
+        <script src="bower_components/Snap.svg/dist/snap.svg.js"></script>		
     </head>
     <body>
 
 		<script>
             			
-			PercentageColorSVG("img/man.svg", 5,2,60,"path", "green", 0.2);
+			PercentageColorSVG("img/man.svg", 10,1,65,"path", "green", 0.05);
 			
 			function PercentageColorSVG(imagePath, cols, rows, percentage, elementToColor, color, scale) {
 			
@@ -31,7 +31,7 @@
 					var height = bbox.h + 1;
 					
 					var total = cols * rows;
-					var totalToColor = Math.round(total * (percentage /  100));
+					var totalToColor = total * (percentage /  100);
 					
 					// Loop through cols and rows
 					var current = 0;
@@ -42,9 +42,25 @@
 							 var clone = element.clone();
 							 
 							 if(current < totalToColor) {
-								 var path = clone.select(elementToColor);
+								 var grad = f.select("#grad");
+								 var stop1 = grad.select("#stop1");
+								 var stop2 = grad.select("#stop2");
+								 
+								 /*
 								 var fill = path.attr("style");
-								 path.attr({fill: color});
+								 var attributes = {fill: color};
+								 */
+								 var attributes = {};
+								 var offset = totalToColor - current;
+							     if (offset < 1){
+									attributes.offset = (offset*100) +'%';
+								 } 
+								 else {
+									attributes.offset = '100%';
+								 }
+								 
+								 stop1.attr(attributes);
+								 stop2.attr(attributes);
 							 }
 									 
 							 // transform the cloned element, by positioning and scaling
@@ -56,12 +72,18 @@
 						  current++;
 					   }
 					}
-					
-					if(1 <= totalToColor){
-						var path = element.select(elementToColor);
-						var fill = path.attr("style");
-						path.attr({fill: color});
-					}
+					/*
+					if(1 <= totalToColor) {
+						 var path = element.select(elementToColor);
+						 var attributes = {fill: color};
+						 
+						 var offset = totalToColor - current;
+						 if (offset < 1){
+							attributes.offset = (offset*100) +'%';
+						 } 
+						 
+						 path.attr(attributes);
+					}*/
 				});     
 			}				
         </script>
