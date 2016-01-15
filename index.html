@@ -3,89 +3,32 @@
         <title>Infographic examples</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src="bower_components/Snap.svg/dist/snap.svg.js"></script>		
-    </head>
-    <body>
+        <script src="bower_components/Snap.svg/dist/snap.svg.js"></script>
+		<script src="js/PercentageColorSVG.js"></script>	
 
 		<script>
-            			
-			PercentageColorSVG("img/man.svg", 10,1,65,"path", "green", 0.05);
-			
-			function PercentageColorSVG(imagePath, cols, rows, percentage, elementToColor, color, scale) {
-			
-				var paper = Snap();
+		
+			PercentageColorSVG({
+				imagePath: "img/man.svg",
+				cols: 5,
+				rows: 2,
+				items: 10,
+				percentage: 70,
+				elemtentToColor: "path",
+				color: "green",
+				baseColor: "black",
+				scale: 0.1
+			});
+
 					
-				Snap.load(imagePath, function (f) {
-					// select main element from callback
-					var element = f.select("g");
-									
-					// scale element
-					element.transform("scale("+ scale +")");
-					
-					//  Append paper to element
-					paper.append(element);
-					
-					// Get bounding box and set offset for clones
-					var bbox = paper.getBBox();
-					var width = bbox.w + 1;
-					var height = bbox.h + 1;
-					
-					var total = cols * rows;
-					var totalToColor = total * (percentage /  100);
-					
-					// Loop through cols and rows
-					var current = 0;
-					for ( i=0; i<rows; i++) {
-					   for ( j=0; j<cols; j++) {
-						  if (i || j ) {   // skip the first cell
-							 // clone the element
-							 var clone = element.clone();
-							 
-							 if(current < totalToColor) {
-								 var grad = f.select("#grad");
-								 var stop1 = grad.select("#stop1");
-								 var stop2 = grad.select("#stop2");
-								 
-								 /*
-								 var fill = path.attr("style");
-								 var attributes = {fill: color};
-								 */
-								 var attributes = {};
-								 var offset = totalToColor - current;
-							     if (offset < 1){
-									attributes.offset = (offset*100) +'%';
-								 } 
-								 else {
-									attributes.offset = '100%';
-								 }
-								 
-								 stop1.attr(attributes);
-								 stop2.attr(attributes);
-							 }
-									 
-							 // transform the cloned element, by positioning and scaling
-							 var x =j*width;
-							 var y = i*height;
-							 var tstr = "translate("+x+","+y+"); scale("+ scale +")";
-							 clone.transform(tstr);
-						  }
-						  current++;
-					   }
-					}
-					/*
-					if(1 <= totalToColor) {
-						 var path = element.select(elementToColor);
-						 var attributes = {fill: color};
-						 
-						 var offset = totalToColor - current;
-						 if (offset < 1){
-							attributes.offset = (offset*100) +'%';
-						 } 
-						 
-						 path.attr(attributes);
-					}*/
-				});     
-			}				
-        </script>
+        </script>		
+    </head>
+    <body>
+	
+	<div id="svg_container">
+			<svg id="mysvg" width="400" height="400"></svg>
+	</div>
+
+		
     </body>
 </html>
